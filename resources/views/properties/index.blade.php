@@ -92,30 +92,30 @@
 <body class="antialiased">
 <div class="container">
     <div>
-        Persons
+        Properties
     </div>
     <div>
         <table>
             <thead>
             <tr>
                 <th>ID</th>
+                <th>Owner (Person ID)</th>
                 <th>Name</th>
-                <th>Surname</th>
-                <th>Personal ID</th>
-                <th>Type</th>
+                <th>Cadastral Number</th>
+                <th>Status</th>
                 <th>Actions</th>
             </tr>
             </thead>
             <tbody>
-            @foreach($persons as $person)
+            @foreach($properties as $property)
                 <tr>
-                    <td>{{ $person->id }}</td>
-                    <td>{{ $person->first_name }}</td>
-                    <td>{{ $person->last_name }}</td>
-                    <td>{{ $person->personal_id_number }}</td>
-                    <td>{{ $person->type }}</td>
+                    <td>{{ $property->id }}</td>
+                    <td>{{ $property->person->personal_id_number }}</td>
+                    <td>{{ $property->name }}</td>
+                    <td>{{ $property->cadastral_number }}</td>
+                    <td>{{ $property->status }}</td>
                     <td>
-                        <a href="/persons/{{ $person->id }}/" class="button">Show</a>
+                        <a href="/properties/{{ $property->id }}/" class="button">Show</a>
                     </td>
                 </tr>
             @endforeach
@@ -124,24 +124,36 @@
 
     </div>
     <div>
-        <p>Make new person</p>
-        <form action="/persons" method="post">
+        <p>Add new property</p>
+        <form action="{{  route('properties.store') }}" method="post">
             @csrf
-            <input type="text" name="first_name" placeholder="Name">
-            <x-input-error :messages="$errors->get('first_name')" class="error-message"/>
 
-            <input type="text" name="last_name" placeholder="Last Name">
-            <x-input-error :messages="$errors->get('last_name')" class="error-message"/>
-
-            <input type="text" name="personal_id_number" placeholder="Personal ID Number">
-            <x-input-error :messages="$errors->get('personal_id_number')" class="error-message"/>
-
-            <label id="type">
-                <select name="type">
-                    <option value="physical">Physical</option>
-                    <option value="legal">Legal</option>
+            <label id="person_id">
+                <select name="person_id">
+                    <option value="" selected disabled>Select a person</option>
+                    @foreach ($people as $person)
+                        <option value="{{ $person->id }}">{{ $person->personal_id_number }}</option>
+                    @endforeach
                 </select>
             </label>
+            <x-input-error :messages="$errors->get('person_id')" class="error-message"/>
+
+            <input type="text" name="name" placeholder="Property name">
+            <x-input-error :messages="$errors->get('name')" class="error-message"/>
+
+            <input type="text" name="cadastral_number" placeholder="Cadastral number">
+            <x-input-error :messages="$errors->get('cadastral_number')" class="error-message"/>
+
+            <label id="status">
+                <select name="status">
+                    <option value="" selected disabled>Select a status</option>
+                    <option value="purchase agreement">Purchase agreement</option>
+                    <option value="paid">Paid</option>
+                    <option value="registered in land registry">Registered in land registry</option>
+                    <option value="sold">Sold</option>
+                </select>
+            </label>
+            <x-input-error :messages="$errors->get('status')" class="error-message"/>
             <button type="submit">Submit</button>
         </form>
     </div>

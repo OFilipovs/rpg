@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Person;
+use App\Models\Property;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -16,9 +17,9 @@ class PersonController extends Controller
         return view('persons.index', compact('persons'));
     }
 
-    public function show(Person $person): View
+    public function show(Property $property): View
     {
-        return view('persons.show', compact('person'));
+        return view('properties.show', compact('property'));
     }
 
     public function edit(Person $person): View
